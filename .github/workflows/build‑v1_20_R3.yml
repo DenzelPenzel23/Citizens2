@@ -1,18 +1,27 @@
 name: Build Citizens v1_20_R3
-on: workflow_dispatch  # manueller Start-Knopf
+on:
+  workflow_dispatch:    # manueller Start-Knopf
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK 17
+
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
-      - name: Build with Maven
-        run: mvn -P1_20_R3 -DskipTests=true package
+
+      # WICHTIG: Nur das NMS-Modul für 1.20.4 bauen
+      - name: Build Citizens v1_20_R3 module
+        run: |
+          mvn -B -DskipTests=true \
+              -pl :citizens-v1_20_R3 -am \
+              clean package
+
+      # Die fertige JAR als Artefakt bereitstellen
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
