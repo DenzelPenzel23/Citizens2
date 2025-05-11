@@ -14,12 +14,13 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # WICHTIG: Nur das NMS-Modul für 1.20.4 bauen
       - name: Build Citizens v1_20_R3 module
         run: |
+          # exakt der Verzeichnisname des Moduls, also ohne "citizens-"
           mvn -B -DskipTests=true \
-              -pl :citizens-v1_20_R3 -am \
+              -pl v1_20_R3 -am \
               clean package
+
 
       # Die fertige JAR als Artefakt bereitstellen
       - name: Upload JAR
